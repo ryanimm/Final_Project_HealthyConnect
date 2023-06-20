@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>HealthyConnect</title>
+    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+    <script src="https://kit.fontawesome.com/f8535c9b97.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='administrator/assets/css/fonts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='administrator/assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='administrator/assets/css/styleadmin.css') }}">
+
+</head>
+
+
+<script>
+    function logout() {
+        $.removeCookie('mytoken', { path: '/' });
+        alert('Signed out!');
+        window.location.href = "/";
+    }
+
+</script>
+
+<body>
+    <div class="wrapper">
+
+        <div class="main-header" data-background-color="purple">
+            <!-- Logo Header -->
+            <div class="logo-header">
+
+                <a href="/" class="logo">
+                    <span class="navbar-brand mb-0"
+                        style="color:white;font-weight:550;font-size:1.25em;">HealthyConnect</span>
+                </a>
+                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+                    data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon">
+                        <i class="fa fa-bars"></i>
+                    </span>
+                </button>
+                <div class="navbar-minimize">
+                    <button class="btn btn-minimize btn-rounded">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <!-- Sidebar -->
+        <div class="sidebar">
+
+            <div class="sidebar-wrapper scrollbar-inner">
+                <div class="sidebar-content">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a href="index">
+                                <i class="fas fa-home"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-section">
+                            <span class="sidebar-mini-icon">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </span>
+                            <h4 class="text-section">Manajemen Data</h4>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="artikel">
+                                <i class="fas fa-newspaper"></i>
+                                <p>Data Artikel</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="produk">
+                                <i class="fas fa-prescription-bottle-alt"></i>
+                                <p>Data Produk</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="transaksi">
+                                <i class="fas fa-cart-plus"></i>
+                                <p>Data Transaksi</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="testimoni">
+                                <i class="fas fa-quote-right"></i>
+                                <p>Data Testimoni</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="forum">
+                                <i class="fas fa-comments"></i>
+                                <p>Data Forum</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="hubungi">
+                                <i class="fas fa-envelope"></i>
+                                <p>Data Hubungi Kami</p>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="#" onclick="logout()">
+                                <i class="fas fa-lock"></i>
+                                <p>Logout</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <div class="content">
+                <div class="page-inner">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-primary card-round">
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="icon-big text-center">
+                                                <i class="fas fa-newspaper"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats">
+                                            <div class="numbers">
+                                                <p class="card-category">Data Artikel</p>
+                                                <h4 class="card-title">
+                                                    {{articles_count}}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-primary card-round">
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="icon-big text-center">
+                                                <i class="fas fa-prescription-bottle-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats">
+                                            <div class="numbers">
+                                                <p class="card-category">Data Produk</p>
+                                                <h4 class="card-title">
+                                                    {{products_count}}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-primary card-round">
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="icon-big text-center">
+                                                <i class="fas fa-cart-plus"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats">
+                                            <div class="numbers">
+                                                <p class="card-category">Data Transaksi</p>
+                                                <h4 class="card-title">
+                                                    {{transactions_count}}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-primary card-round">
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="icon-big text-center">
+                                                <i class="fas fa-quote-right"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats">
+                                            <div class="numbers">
+                                                <p class="card-category">Data Testimoni</p>
+                                                <h4 class="card-title">
+                                                    {{testimony_count}}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-primary card-round">
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="icon-big text-center">
+                                                <i class="fas fa-quote-right"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats">
+                                            <div class="numbers">
+                                                <p class="card-category">Data Penghasilan</p>
+                                                <h4 class="card-title">
+                                                    Rp. {{income}}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-primary card-round">
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="icon-big text-center">
+                                                <i class="fas fa-comments"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats">
+                                            <div class="numbers">
+                                                <p class="card-category">Data Forum</p>
+                                                <h4 class="card-title">
+                                                    {{thread_count}}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-primary card-round">
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="icon-big text-center">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats">
+                                            <div class="numbers">
+                                                <p class="card-category">Data Hubungi Kami</p>
+                                                <h4 class="card-title">
+                                                    {{contact_count}}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <center>
+                                        <h3><b>SELAMAT DATANG DI DASHBOARD ADMINISTRATOR HEALTHYCONNECT</b></h3>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    </div>
+    <script src="{{ url_for('static', filename='administrator/assets/js/jquery.3.2.1.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/bootstrap.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/datatables/datatables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/ready.min.js') }}"></script>
+    <script>
+        $(document).ajaxComplete(function () {
+            $('#add-row').DataTable({
+                pageLength: 25
+            });
+        });
+    </script>
+</body>
+
+</html>

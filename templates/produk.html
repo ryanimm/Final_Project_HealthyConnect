@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HealthyConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="{{ url_for('static', filename='user/style.css') }}" rel="stylesheet">
+</head>
+
+<script>
+    $(document).ready(function () {
+        // Aksi ketika tombol decrement diklik
+        $('.btn-minus').click(function () {
+            var quantityInput = $(this).closest('.card-body').find('input[name="quantity"]');
+            var currentValue = parseInt(quantityInput.val());
+            if (currentValue > 1) {
+                quantityInput.val(currentValue - 1);
+            }
+        });
+
+        // Aksi ketika tombol increment diklik
+        $('.btn-plus').click(function () {
+            var quantityInput = $(this).closest('.card-body').find('input[name="quantity"]');
+            var currentValue = parseInt(quantityInput.val());
+            var maxQuantity = parseInt(quantityInput.attr('max'));
+            if (currentValue < maxQuantity) {
+                quantityInput.val(currentValue + 1);
+            }
+        });
+
+        $('.purchase-button').click(function() {
+            var id = $(this).data('id');
+            var quantity = $('#quantity-' + id).val();
+            var url = '/bayar?quantity=' + quantity + '&product_id=' + id;
+            window.location.href = url;
+        });
+    });
+</script>
+
+
+<body>
+    {% if user_info %}
+    {% if user_info.role == 'admin' %}
+    {% include 'navbar_check/navbar_admin.html' %}
+    {% elif user_info.role == 'member' %}
+    {% include 'navbar_check/navbar_member.html' %}
+    {% endif %}
+    {% else %}
+    {% include 'navbar_check/navbar_viewer.html' %}
+    {% endif %}
+
+    <body>
+        <div class="container my-5 px-3" style="min-height:100vh">
+            <div class="kategoricaption mb-5">
+                <div class="row">
+                    <div class="col">
+                        <h1 class="text-center fw-bold judulkategori">Beli Obat</h1>
+                        <hr class="mx-auto" style="width:10%; background-color: #c3e2f0;">
+
+                    </div>
+                </div>
+
+            </div>
+
+            <form class="mb-5" action="{{ url_for('produk') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg" name="query" placeholder="Cari produk...">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for product in products %}
+                <div class="col mb-3">
+                    <div class="card shadow h-100 border border-primary"><img src="{{ url_for('static', filename=product.gambar_produk)}}"
+                            style="height: 250px!important;object-fit: contain;" class="card-img-top rounded-top">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="produk-text d-flex flex-column text-center">
+                                    <span class="h5 card-title mt-2">{{product.nama_produk}}</span>
+                                    <span class="fs-5">Rp. {{product.harga_produk}}</span>
+                                </div>
+                            </div>
+                            <div class="col d-flex justify-content-center gap-3 mt-3">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-primary btn-minus rounded-circle"
+                                        style="width: 35px;height: 35px;">-</button>
+                                </div>
+                                <input type="number" id="quantity-{{product['_id']}}" step="1" max="10" value="1" name="quantity"
+                                    class="border-1 text-center w-25">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary btn-plus rounded-circle"
+                                        style="width: 35px;height: 35px;">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer mb-3 px-4" style="border: none; background-color: transparent">
+                            <div class="d-flex gap-2">
+                                <button type="button" data-id="{{product['_id']}}" class="btn btn-primary flex-fill w-100 purchase-button">Beli Sekarang</button>
+                                <button type="button" class="btn btn-outline-secondary flex-fill w-100"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deskripsi_{{product['_id']}}">Deskripsi</button>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="deskripsi_{{product['_id']}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{{product.nama_produk}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <span class="fw-bold fs-5">Deskripsi:</span><br><br>
+                                <p style="white-space: pre-line;text-align:justify;">{{product.deskripsi_produk}}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        </div>
+    </body>
+
+
+
+
+
+
+
+
+
+    <footer class="copyright">
+        <div class="container py-2">
+            <p class="text-center my-3">Copyright © by Kelompok 3</p>
+        </div>
+    </footer>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>HealthyConnect</title>
+    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+    <script src="https://kit.fontawesome.com/f8535c9b97.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='administrator/assets/css/fonts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='administrator/assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='administrator/assets/css/styleadmin.css') }}">
+
+
+</head>
+
+
+<script>
+    function logout() {
+        $.removeCookie('mytoken', { path: '/' });
+        alert('Signed out!');
+        window.location.href = "/";
+    }
+
+</script>
+
+<body>
+    <div class="wrapper">
+
+        <div class="main-header" data-background-color="purple">
+            <!-- Logo Header -->
+            <div class="logo-header">
+
+                <a href="/" class="logo">
+                    <span class="navbar-brand mb-0" style="color:white;font-weight:550;font-size:1.25em;">HealthyConnect</span>
+                </a>
+                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+                    data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon">
+                        <i class="fa fa-bars"></i>
+                    </span>
+                </button>
+                <div class="navbar-minimize">
+                    <button class="btn btn-minimize btn-rounded">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <!-- Sidebar -->
+        <div class="sidebar">
+
+            <div class="sidebar-wrapper scrollbar-inner">
+                <div class="sidebar-content">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a href="index">
+                                <i class="fas fa-home"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-section">
+                            <span class="sidebar-mini-icon">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </span>
+                            <h4 class="text-section">Manajemen Data</h4>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="artikel">
+                                <i class="fas fa-newspaper"></i>
+                                <p>Data Artikel</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="produk">
+                                <i class="fas fa-prescription-bottle-alt"></i>
+                                <p>Data Produk</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="transaksi">
+                                <i class="fas fa-cart-plus"></i>
+                                <p>Data Transaksi</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="testimoni">
+                                <i class="fas fa-quote-right"></i>
+                                <p>Data Testimoni</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="forum">
+                                <i class="fas fa-comments"></i>
+                                <p>Data Forum</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="hubungi">
+                                <i class="fas fa-envelope"></i>
+                                <p>Data Hubungi Kami</p>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="#" onclick="logout()">
+                                <i class="fas fa-lock"></i>
+                                <p>Logout</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="main-panel">
+            <div class="content">
+                <div class="page-inner">
+                    <div class="page-header">
+                        <h4 class="page-title">Data Transaksi</h4>
+                        <ul class="breadcrumbs">
+                            <li class="nav-home">
+                                <a href="#">
+                                    <i class="flaticon-home"></i>
+                                </a>
+                            </li>
+                            <li class="separator">
+                                <i class="flaticon-right-arrow"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Data</a>
+                            </li>
+                            <li class="separator">
+                                <i class="flaticon-right-arrow"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Transaksi</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex align-items-center">
+                                        <h4 class="card-title">Data Transaksi</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="table-responsive">
+                                        <table id="add-row" class="display table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Username</th>
+                                                    <th>Nama Pembeli</th>
+                                                    <th>Alamat Pembeli</th>
+                                                    <th>No. Telepon Pembeli</th>
+                                                    <th>Catatan Pembeli</th>
+                                                    <th>Produk Yang Dibeli</th>
+                                                    <th>Kuantitas</th>
+                                                    <th>Total Harga</th>
+                                                    <th>Bukti</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {% for transaction in transactions %}
+                                                <tr>
+                                                    <td>{{loop.index}}</td>
+                                                    <td>{{transaction.username}}</td>
+                                                    <td>{{transaction.nama_pembeli}}</td>
+                                                    <td>{{transaction.alamat_pembeli}}</td>
+                                                    <td>{{transaction.nomor_telepon}}</td>
+                                                    <td>{{transaction.catatan_pembelian}}</td>
+                                                    <td>{{transaction.nama_produk}}</td>
+                                                    <td>{{transaction.quantity}}</td>
+                                                    <td>{{transaction.total_harga}}</td>
+                                                    <td><a href="{{ url_for('static', filename=transaction.bukti_pembayaran)}}" target="_blank">
+                                                        <img src="{{ url_for('static', filename=transaction.bukti_pembayaran)}}" width="70" height="70" style="object-fit:contain">
+                                                    </a></td>
+                                                    <td>{{transaction.status | capitalize}}</td>
+                                                    <td class="text-center">
+                                                        {% if transaction.status == "pending" %}
+                                                        <a href="#terimaPembelian_{{transaction['_id']}}" data-toggle="modal"
+                                                            class="btn btn-xs btn-primary mb-2">
+                                                            <i class="fa fa-check"></i> Terima
+                                                        </a>
+                                                        <a href="#tolakPembelian_{{transaction['_id']}}" data-toggle="modal"
+                                                            class="btn btn-xs btn-danger">
+                                                            <i class="fa fa-times"></i> Tolak
+                                                        </a>
+                                                        {% elif transaction.status == "diterima" %}
+                                                        <a href="#kirimPembelian_{{transaction['_id']}}" data-toggle="modal"
+                                                        class="btn btn-xs btn-warning mb-2">
+                                                        <i class="fa fa-truck"></i> Kirim Barang
+                                                        </a>
+                                                        {% elif transaction.status == "ditolak" %}
+                                                        <a href="#" class="btn btn-xs btn-secondary mb-2">
+                                                         No Action
+                                                        </a>
+                                                        {% elif transaction.status == "dikirim" %}
+                                                        <a href="#" class="btn btn-xs btn-secondary mb-2">
+                                                         No Action
+                                                        </a>
+                                                        {% elif transaction.status == "selesai" %}
+                                                        <a href="#" class="btn btn-xs btn-secondary mb-2">
+                                                         No Action
+                                                        </a>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+
+
+                                                 <!-- modal edit -->
+                                                 <div class="modal fade" id="terimaPembelian_{{transaction['_id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header no-bd">
+                                                                <h5 class="modal-title">
+                                                                    <span class="fw-mediumbold">
+                                                                        Terima</span>
+                                                                    <span class="fw-light">
+                                                                        Pembelian
+                                                                    </span>
+                                                                </h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="/terima_pembelian" enctype="multipart/form-data">
+                                                                <div class="modal-body">
+                                                                    <input type="hidden" value="{{transaction['_id']}}" class="form-control" name="id">
+                                                                    <div class="form-group">
+                                                                        <label>Catatan Admin</label>
+                                                                        <textarea class="form-control mt-3" style="white-space: pre-line;" rows="5"
+                                                                        name="catatan_admin" id="catatan_admin"
+                                                                        placeholder="Catatan Admin ...." required></textarea>
+                                                                    </div>
+   
+                                                                </div>
+
+                                                                <div class="modal-footer no-bd">
+                                                                    <button type="submit" name="ubah" class="btn btn-primary"><i class="fa fa-save"></i> Save
+                                                                        Changes</button>
+                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo"></i>
+                                                                        Close</button>
+                                                                </div>
+                                        
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end of modal edit -->
+
+                                                <!-- modal tolak -->
+                                                <div class="modal fade" id="tolakPembelian_{{transaction['_id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header no-bd">
+                                                                <h5 class="modal-title">
+                                                                    <span class="fw-mediumbold">
+                                                                        Tolak</span>
+                                                                    <span class="fw-light">
+                                                                        Pembelian
+                                                                    </span>
+                                                                </h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="/tolak_pembelian" enctype="multipart/form-data">
+                                                                <div class="modal-body">
+                                                                    <input type="hidden" value="{{transaction['_id']}}" class="form-control" name="id">
+                                                                    <div class="form-group">
+                                                                        <label>Alasan Penolakkan</label>
+                                                                        <textarea class="form-control mt-3" style="white-space: pre-line;" rows="5"
+                                                                        name="catatan_admin" id="catatan_admin"
+                                                                        placeholder="Alasan Penolakkan ...." required></textarea>
+                                                                    </div>
+   
+                                                                </div>
+
+                                                                <div class="modal-footer no-bd">
+                                                                    <button type="submit" name="ubah" class="btn btn-primary"><i class="fa fa-save"></i> Save
+                                                                        Changes</button>
+                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo"></i>
+                                                                        Close</button>
+                                                                </div>
+                                        
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end of modal tolak -->
+
+                                                <!-- modal kirim barang -->
+                                                <div class="modal fade" id="kirimPembelian_{{transaction['_id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header no-bd">
+                                                                <h5 class="modal-title">
+                                                                    <span class="fw-mediumbold">
+                                                                        Kirim</span>
+                                                                    <span class="fw-light">
+                                                                        Pembelian
+                                                                    </span>
+                                                                </h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="/kirim_pembelian" enctype="multipart/form-data">
+                                                                <div class="modal-body">
+                                                                    <input type="hidden" value="{{transaction['_id']}}" class="form-control" name="id">
+                                                                    <div class="form-group">
+                                                                        <label>No. Resi & Catatan Singkat</label>
+                                                                        <textarea class="form-control mt-3" style="white-space: pre-line;" rows="3"
+                                                                        name="catatan_admin" id="catatan_admin"
+                                                                        placeholder="Nomor Resi & Catatan Singkat ...." required></textarea>
+                                                                    </div>
+   
+                                                                </div>
+
+                                                                <div class="modal-footer no-bd">
+                                                                    <button type="submit" name="ubah" class="btn btn-primary"><i class="fa fa-save"></i> Save
+                                                                        Changes</button>
+                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo"></i>
+                                                                        Close</button>
+                                                                </div>
+                                        
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- end of modal kirim barang -->
+
+
+                                        
+                                                {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        
+    </div>
+    <script src="{{ url_for('static', filename='administrator/assets/js/jquery.3.2.1.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/bootstrap.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/datatables/datatables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/ready.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#add-row').DataTable({
+                pageLength: 25
+            });
+        });
+    </script>
+</body>
+
+</html>

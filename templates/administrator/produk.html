@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>HealthyConnect</title>
+    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+    <script src="https://kit.fontawesome.com/f8535c9b97.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='administrator/assets/css/fonts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='administrator/assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='administrator/assets/css/styleadmin.css') }}">
+
+
+</head>
+
+
+<script>
+    function logout() {
+        $.removeCookie('mytoken', { path: '/' });
+        alert('Signed out!');
+        window.location.href = "/";
+    }
+
+</script>
+
+<body>
+    <div class="wrapper">
+
+        <div class="main-header" data-background-color="purple">
+            <!-- Logo Header -->
+            <div class="logo-header">
+
+                <a href="/" class="logo">
+                    <span class="navbar-brand mb-0"
+                        style="color:white;font-weight:550;font-size:1.25em;">HealthyConnect</span>
+                </a>
+                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+                    data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon">
+                        <i class="fa fa-bars"></i>
+                    </span>
+                </button>
+                <div class="navbar-minimize">
+                    <button class="btn btn-minimize btn-rounded">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <!-- Sidebar -->
+        <div class="sidebar">
+
+            <div class="sidebar-wrapper scrollbar-inner">
+                <div class="sidebar-content">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a href="index">
+                                <i class="fas fa-home"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-section">
+                            <span class="sidebar-mini-icon">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </span>
+                            <h4 class="text-section">Manajemen Data</h4>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="artikel">
+                                <i class="fas fa-newspaper"></i>
+                                <p>Data Artikel</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="produk">
+                                <i class="fas fa-prescription-bottle-alt"></i>
+                                <p>Data Produk</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="transaksi">
+                                <i class="fas fa-cart-plus"></i>
+                                <p>Data Transaksi</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="testimoni">
+                                <i class="fas fa-quote-right"></i>
+                                <p>Data Testimoni</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="forum">
+                                <i class="fas fa-comments"></i>
+                                <p>Data Forum</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="hubungi">
+                                <i class="fas fa-envelope"></i>
+                                <p>Data Hubungi Kami</p>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="#" onclick="logout()">
+                                <i class="fas fa-lock"></i>
+                                <p>Logout</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="main-panel">
+            <div class="content">
+                <div class="page-inner">
+                    <div class="page-header">
+                        <h4 class="page-title">Data Produk</h4>
+                        <ul class="breadcrumbs">
+                            <li class="nav-home">
+                                <a href="#">
+                                    <i class="flaticon-home"></i>
+                                </a>
+                            </li>
+                            <li class="separator">
+                                <i class="flaticon-right-arrow"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Data</a>
+                            </li>
+                            <li class="separator">
+                                <i class="flaticon-right-arrow"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Produk</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex align-items-center">
+                                        <h4 class="card-title">Data Produk</h4>
+                                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal"
+                                            data-target="#addProduk">
+                                            <i class="fa fa-plus"></i>
+                                            Tambah Data
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="table-responsive">
+                                        <table id="add-row" class="display table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Gambar Produk</th>
+                                                    <th>Nama Produk</th>
+                                                    <th>Deskripsi Produk</th>
+                                                    <th>Harga</th>
+                                                    <th>Stok</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {% for product in products %}
+                                                <tr>
+                                                    <td>{{loop.index}}</td>
+                                                    <td class="text-center"><img
+                                                            src="{{ url_for('static', filename=product.gambar_produk)}}"
+                                                            width="50" height="50"></td>
+                                                    <td>{{product.nama_produk}}</td>
+                                                    <td width="30%">{{product.deskripsi_produk}}</td>
+                                                    <td>Rp. {{product.harga_produk}}</td>
+                                                    <td>{{product.stok_produk}}</td>
+                                                    <td>
+                                                        <a href="#editProduk_{{product['_id']}}" data-toggle="modal"
+                                                            class="btn btn-xs btn-primary">
+                                                            <i class="fa fa-edit"></i> Edit
+                                                        </a>
+                                                        <a href="#hapusProduk_{{product['_id']}}" data-toggle="modal"
+                                                            class="btn btn-xs btn-danger">
+                                                            <i class="fa fa-trash"></i> Hapus
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+
+                                                <!-- modal edit -->
+                                                <div class="modal fade" id="editProduk_{{product['_id']}}" tabindex="-1"
+                                                    role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header no-bd">
+                                                                <h5 class="modal-title">
+                                                                    <span class="fw-mediumbold">
+                                                                        Edit Data</span>
+                                                                    <span class="fw-light">
+                                                                        Produk
+                                                                    </span>
+                                                                </h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="/edit_produk"
+                                                                enctype="multipart/form-data">
+
+                                                                <div class="modal-body">
+                                                                    <input type="hidden" value="{{product['_id']}}"
+                                                                        class="form-control" name="id">
+
+                                                                    <div class="form-group">
+                                                                        <label>Nama Produk</label>
+                                                                        <input type="text" class="form-control mt-2"
+                                                                            name="nama_produk" id="nama_produk"
+                                                                            placeholder="Nama Produk ..."
+                                                                            value="{{product.nama_produk}}" required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <img src="{{ url_for('static', filename=product.gambar_produk)}}"
+                                                                            width="70" height="70">
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label>Upload Gambar</label>
+                                                                        <input type="file" class="form-control mt-2"
+                                                                            name="gambar_produk" id="gambar_produk"
+                                                                            accept=".png, .jpg, .jpeg">
+                                                                        <small>Format Gambar Harus JPG / PNG /
+                                                                            JPEG</small>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label>Deskripsi Produk</label>
+                                                                        <textarea class="form-control mt-2"
+                                                                            style="white-space: pre-line;" rows="4"
+                                                                            name="deskripsi_produk"
+                                                                            id="deskripsi_produk"
+                                                                            placeholder="Keterangan Produk ..."
+                                                                            required>{{product.deskripsi_produk}}</textarea>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label>Harga Produk</label>
+                                                                        <input type="number" class="form-control mt-2"
+                                                                            name="harga_produk" id="harga_produk"
+                                                                            placeholder="Harga Produk..."
+                                                                            value="{{product.harga_produk}}" required>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label>Stok Produk</label>
+                                                                        <input type="number" class="form-control mt-2"
+                                                                            name="stok" id="stok"
+                                                                            placeholder="Stok Produk..."
+                                                                            value="{{product.stok_produk}}" required>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="modal-footer no-bd">
+                                                                    <button type="submit" name="ubah"
+                                                                        class="btn btn-primary"><i
+                                                                            class="fa fa-save"></i> Save
+                                                                        Changes</button>
+                                                                    <button type="button" class="btn btn-danger"
+                                                                        data-dismiss="modal"><i class="fa fa-undo"></i>
+                                                                        Close</button>
+                                                                </div>
+
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end of modal edit -->
+
+
+                                                <!-- modal delete -->
+                                                <div class="modal fade" id="hapusProduk_{{product['_id']}}"
+                                                    tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header no-bd">
+                                                                <h5 class="modal-title">
+                                                                    <span class="fw-mediumbold">
+                                                                        Hapus Data</span>
+                                                                    <span class="fw-light">
+                                                                        Produk
+                                                                    </span>
+                                                                </h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="/delete_produk"
+                                                                enctype="multipart/form-data">
+
+                                                                <div class="modal-body">
+
+                                                                    <input type="hidden" value="{{product['_id']}}"
+                                                                        class="form-control" name="id">
+
+                                                                    <div class="form-group">
+                                                                        <h4>Apakah Anda ingin Menghapus Data ini ?</h4>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="modal-footer no-bd">
+                                                                    <button type="submit" name="hapus"
+                                                                        class="btn btn-danger"><i
+                                                                            class="fa fa-trash"></i>
+                                                                        Hapus</button>
+                                                                    <button type="button" class="btn btn-primary"
+                                                                        data-dismiss="modal"><i class="fa fa-undo"></i>
+                                                                        Close</button>
+                                                                </div>
+
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end of modal delete -->
+
+                                                {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="addProduk" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header no-bd">
+                        <h5 class="modal-title">
+                            <span class="fw-mediumbold">
+                                Tambah Data</span>
+                            <span class="fw-light">
+                                Produk
+                            </span>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="/tambah_produk" enctype="multipart/form-data">
+
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Nama Produk</label>
+                                <input type="text" class="form-control mt-2" name="nama_produk" id="nama_produk"
+                                    placeholder="Nama Produk ..." required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Upload Gambar</label>
+                                <input type="file" class="form-control mt-2" name="gambar_produk" id="gambar_produk"
+                                    accept=".png, .jpg, .jpeg" required>
+                                <small>Format Gambar Harus JPG / PNG / JPEG</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Deskripsi Produk</label>
+                                <textarea class="form-control mt-2" style="white-space: pre-line;" rows="4"
+                                    name="deskripsi_produk" id="deskripsi_produk" placeholder="Keterangan Produk ..."
+                                    required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Harga Produk</label>
+                                <input type="number" class="form-control mt-2" name="harga_produk" id="harga_produk"
+                                    placeholder="Harga Produk..." required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Stok Produk</label>
+                                <input type="number" class="form-control mt-2" name="stok" id="stok"
+                                    placeholder="Stok Produk..." required>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer no-bd">
+                            <button type="submit" name="simpan" class="btn btn-primary"><i class="fa fa-save"></i> Save
+                                Changes</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo"></i>
+                                Close</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+    </div>
+    <script src="{{ url_for('static', filename='administrator/assets/js/jquery.3.2.1.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/bootstrap.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/datatables/datatables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/ready.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#add-row').DataTable({
+                pageLength: 25
+            });
+        });
+    </script>
+</body>
+
+</html>

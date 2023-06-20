@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HealthyConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="{{ url_for('static', filename='user/style.css') }}" rel="stylesheet">
+
+</head>
+
+<script>
+    function tambah_pertanyaan() {
+        let judul = $("#judul").val();
+        let konten = $("#konten").val();
+    
+        if (judul.trim() === '' || konten.trim() === '') {
+            Swal.fire({
+                title: "Error!",
+                text: "Judul dan isi konten tidak boleh kosong!",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+            return; // Berhenti eksekusi jika judul atau konten kosong
+        }
+    
+        $.ajax({
+            type: "POST",
+            url: "/forum",
+            data: {
+                judul: judul,
+                konten: konten,
+            },
+            success: function (response) {
+                Swal.fire({
+                    title: "Sukses!",
+                    text: "Pertanyaan berhasil ditambahkan!",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                }).then(() => {
+                    window.location.replace("/forum");
+                });
+            },
+        });
+    }
+    
+</script>
+
+<body>
+    {% if user_info %}
+    {% if user_info.role == 'admin' %}
+    {% include 'navbar_check/navbar_admin.html' %}
+    {% elif user_info.role == 'member' %}
+    {% include 'navbar_check/navbar_member.html' %}
+    {% endif %}
+    {% else %}
+    {% include 'navbar_check/navbar_viewer.html' %}
+    {% endif %}
+
+    <div class="container my-5 px-3" style="min-height:100vh">
+        <div class="kategoricaption mb-5">
+            <div class="row">
+                <div class="col">
+                    <h1 class="text-center fw-bold judulkategori">Daftar Pertanyaan</h1>
+                    <hr class="mx-auto" style="width:10%; background-color: #1E88E5;">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mb-4 d-flex">
+            <div class="btn-tanya ms-auto ">
+                <button class="btn btn-primary btn-lg rounded-pill" data-bs-toggle="modal"
+                    data-bs-target="#tambahPertanyaan">Pertanyaan Baru</button>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="container mt-2">
+                <ul class="nav nav-pills nav-fill gap-2" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="unfinished-tab" data-bs-toggle="tab" href="#unfinished"
+                            role="tab" aria-controls="unfinished" aria-selected="true">Belum Selesai</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="finished-tab" data-bs-toggle="tab" href="#finished" role="tab"
+                            aria-controls="finished" aria-selected="false">Sudah Selesai</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="unfinished" role="tabpanel"
+                        aria-labelledby="unfinished-tab">
+                        <!-- Konten untuk tab 'Belum Selesai' -->
+                        {% for forum in forums %}
+                        {% if forum.isCompleted == "false" %}
+                        <div class="card row-hover mx-auto mt-3 py-3 px-3 mb-4 border-primary rounded-0">
+                            <div class="row align-items-center">
+                                <div class="col-md-8 mb-3 mb-sm-0">
+                                    <h5>
+                                        <a href="/forum/{{forum['_id']}}" class="text-primary text-decoration-none">{{ forum.judul }}</a>
+                                    </h5>
+                                    <p class="text-sm">
+                                        <span class="op-6">Posted by</span>
+                                        <a class="text-black" href="/profil/{{ forum.username }}">{{ forum.username }}</a>
+                                    </p>
+                                    <span class="text-muted">{{ forum.post_data }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="tab-pane fade" id="finished" role="tabpanel" aria-labelledby="finished-tab">
+                        <!-- Konten untuk tab 'Sudah Selesai' -->
+                        {% for forum in forums %}
+                        {% if forum.isCompleted == "true" %}
+                        <div class="card row-hover mx-auto mt-3 py-3 px-3 mb-4 border-primary rounded-0">
+                            <div class="row align-items-center">
+                                <div class="col-md-8 mb-3 mb-sm-0">
+                                    <h5>
+                                        <a href="/forum/{{forum['_id']}}" class="text-primary text-decoration-none">{{ forum.judul }}</a>
+                                    </h5>
+                                    <p class="text-sm">
+                                        <span class="op-6">Posted by</span>
+                                        <a class="text-black" href="/profil/{{ forum.username }}">{{ forum.username }}</a>
+                                    </p>
+                                    <span class="text-muted">{{ forum.post_data }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="tambahPertanyaan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tambahkan Pertanyaan baru</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Judul Thread</label>
+                        <input type="text" class="form-control" id="judul" name="judul"
+                            placeholder="Masukkan Judul Thread/Pertanyaan" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Isi/Konten</label>
+                        <textarea class="form-control" id="konten" name="konten" rows="5" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" name="simpan" class="btn btn-primary" onclick="tambah_pertanyaan()">Save
+                        changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <footer class="copyright">
+        <div class="container py-2">
+            <p class="text-center my-3">Copyright © by Kelompok 3</p>
+        </div>
+    </footer>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

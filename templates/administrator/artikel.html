@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>HealthyConnect</title>
+    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+    <script src="https://kit.fontawesome.com/f8535c9b97.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='administrator/assets/css/fonts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='administrator/assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='administrator/assets/css/styleadmin.css') }}">
+
+
+</head>
+
+
+<script>
+    function logout() {
+        $.removeCookie('mytoken', { path: '/' });
+        alert('Signed out!');
+        window.location.href = "/";
+    }
+
+</script>
+
+<body>
+    <div class="wrapper">
+
+        <div class="main-header" data-background-color="purple">
+            <!-- Logo Header -->
+            <div class="logo-header">
+
+                <a href="/" class="logo">
+                    <span class="navbar-brand mb-0" style="color:white;font-weight:550;font-size:1.25em;">HealthyConnect</span>
+                </a>
+                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+                    data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon">
+                        <i class="fa fa-bars"></i>
+                    </span>
+                </button>
+                <div class="navbar-minimize">
+                    <button class="btn btn-minimize btn-rounded">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <!-- Sidebar -->
+        <div class="sidebar">
+
+            <div class="sidebar-wrapper scrollbar-inner">
+                <div class="sidebar-content">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a href="index">
+                                <i class="fas fa-home"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-section">
+                            <span class="sidebar-mini-icon">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </span>
+                            <h4 class="text-section">Manajemen Data</h4>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="artikel">
+                                <i class="fas fa-newspaper"></i>
+                                <p>Data Artikel</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="produk">
+                                <i class="fas fa-prescription-bottle-alt"></i>
+                                <p>Data Produk</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="transaksi">
+                                <i class="fas fa-cart-plus"></i>
+                                <p>Data Transaksi</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="testimoni">
+                                <i class="fas fa-quote-right"></i>
+                                <p>Data Testimoni</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="forum">
+                                <i class="fas fa-comments"></i>
+                                <p>Data Forum</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="hubungi">
+                                <i class="fas fa-envelope"></i>
+                                <p>Data Hubungi Kami</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" onclick="logout()">
+                                <i class="fas fa-lock"></i>
+                                <p>Logout</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="main-panel">
+            <div class="content">
+                <div class="page-inner">
+                    <div class="page-header">
+                        <h4 class="page-title">Data Artikel</h4>
+                        <ul class="breadcrumbs">
+                            <li class="nav-home">
+                                <a href="#">
+                                    <i class="flaticon-home"></i>
+                                </a>
+                            </li>
+                            <li class="separator">
+                                <i class="flaticon-right-arrow"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Data</a>
+                            </li>
+                            <li class="separator">
+                                <i class="flaticon-right-arrow"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Artikel</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex align-items-center">
+                                        <h4 class="card-title">Data Artikel</h4>
+                                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal"
+                                            data-target="#addArtikel">
+                                            <i class="fa fa-plus"></i>
+                                            Tambah Data
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="table-responsive">
+                                        <table id="add-row" class="display table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Gambar</th>
+                                                    <th>Judul Artikel</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {% for article in articles %}
+                                                <tr>
+                                                    <td>{{loop.index}}</td>
+                                                    <td><img src="{{ url_for('static', filename=article.gambar_artikel)}}"
+                                                            width="50" height="50"></td>
+                                                    <td>{{article.judul_artikel}}</td>
+                                                    <td>
+                                                        <a href="#editArtikel_{{article['_id']}}" data-toggle="modal"
+                                                            class="btn btn-xs btn-primary">
+                                                            <i class="fa fa-edit"></i> Edit
+                                                        </a>
+                                                        <a href="#hapusArtikel_{{article['_id']}}" data-toggle="modal"
+                                                            class="btn btn-xs btn-danger">
+                                                            <i class="fa fa-trash"></i> Hapus
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+
+                                                <!-- modal edit -->
+                                                <div class="modal fade" id="editArtikel_{{article['_id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header no-bd">
+                                                                <h5 class="modal-title">
+                                                                    <span class="fw-mediumbold">
+                                                                        Edit Data</span>
+                                                                    <span class="fw-light">
+                                                                        Artikel
+                                                                    </span>
+                                                                </h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="/edit_artikel" enctype="multipart/form-data">
+                                        
+                                                                <div class="modal-body">
+                                                                    <input type="hidden" value="{{article['_id']}}" class="form-control" name="id">
+
+                                                                    <div class="form-group">
+                                                                        <label>Nama Artikel</label>
+                                                                        <input type="text" class="form-control" value="{{article.judul_artikel}}"
+                                                                        name="nama_artikel" id="nama_artikel" placeholder="Nama Artikel ..." required>
+                                                                    </div>
+                                        
+                                                                    <div class="form-group">
+                                                                        <img src="{{ url_for('static', filename=article.gambar_artikel)}}" width="70" height="70">
+                                                                    </div>
+                                        
+                                                                    <div class="form-group">
+                                                                        <label>Upload Gambar</label>
+                                                                        <input type="file" class="form-control" name="gambar_artikel" id="gambar_artikel"
+                                                                            accept=".png, .jpg, .jpeg">
+                                                                        <small>Format Gambar Harus JPG / PNG / JPEG</small>
+                                                                    </div>
+                                        
+                                                                    <div class="form-group">
+                                                                        <label>Keterangan Gambar</label>
+                                                                        <input type="text" class="form-control" name="keterangan_gambar" id="keterangan_gambar"
+                                                                            value="{{article.keterangan_gambar}}" placeholder="Keterangan Gambar ...">
+                                                                    </div>
+                                        
+                                                                    <div class="form-group">
+                                                                        <label>Keterangan Artikel</label>
+                                                                        <textarea class="form-control" style="white-space: pre-line;" rows="5"
+                                                                        name="keterangan_artikel" id="keterangan_artikel"
+                                                                        placeholder="Keterangan Artikel ..." required>{{article.keterangan_artikel}}</textarea>
+                                                                    </div>
+                                                                </div>
+                                        
+                                                                <div class="modal-footer no-bd">
+                                                                    <button type="submit" name="ubah" class="btn btn-primary"><i class="fa fa-save"></i> Save
+                                                                        Changes</button>
+                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo"></i>
+                                                                        Close</button>
+                                                                </div>
+                                        
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end of modal edit -->
+
+
+                                                <!-- modal delete -->
+                                                <div class="modal fade" id="hapusArtikel_{{article['_id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header no-bd">
+                                                                <h5 class="modal-title">
+                                                                    <span class="fw-mediumbold">
+                                                                        Hapus Data</span>
+                                                                    <span class="fw-light">
+                                                                        Artikel
+                                                                    </span>
+                                                                </h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" action="/delete_artikel" enctype="multipart/form-data">
+                                        
+                                                                <div class="modal-body">
+                                        
+                                                                    <input type="hidden" value="{{article['_id']}}" class="form-control" name="id">
+                                        
+                                                                    <div class="form-group">
+                                                                        <h4>Apakah Anda ingin Menghapus Data ini ?</h4>
+                                                                    </div>
+                                                                </div>
+                                        
+                                                                <div class="modal-footer no-bd">
+                                                                    <button type="submit" name="hapus" class="btn btn-danger"><i class="fa fa-trash"></i>
+                                                                        Hapus</button>
+                                                                    <button type="button" class="btn btn-primary" data-dismiss="modal"><i
+                                                                            class="fa fa-undo"></i> Close</button>
+                                                                </div>
+                                        
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                 <!-- end of modal delete -->
+                                        
+                                                {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="addArtikel" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header no-bd">
+                        <h5 class="modal-title">
+                            <span class="fw-mediumbold">
+                                Tambah Data</span>
+                            <span class="fw-light">
+                                Artikel
+                            </span>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="/tambah_artikel" enctype="multipart/form-data">
+
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Nama Artikel</label>
+                                <input type="text" class="form-control" name="nama_artikel" id="nama_artikel"
+                                    placeholder="Nama Artikel ..." required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Upload Gambar</label>
+                                <input type="file" class="form-control" name="gambar_artikel" id="gambar_artikel"
+                                    accept=".png, .jpg, .jpeg" required>
+                                <small>Format Gambar Harus JPG / PNG / JPEG</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Keterangan Gambar</label>
+                                <input type="text" class="form-control" name="keterangan_gambar" id="keterangan_gambar"
+                                    placeholder="Keterangan Gambar ..." required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Keterangan Artikel</label>
+                                <textarea class="form-control" style="white-space: pre-line;" rows="5"
+                                    name="keterangan_artikel" id="keterangan_artikel"
+                                    placeholder="Keterangan Artikel ..." required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer no-bd">
+                            <button type="submit" name="simpan" class="btn btn-primary"><i class="fa fa-save"></i> Save
+                                Changes</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo"></i>
+                                Close</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        
+
+
+       
+
+
+
+    </div>
+    <script src="{{ url_for('static', filename='administrator/assets/js/jquery.3.2.1.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/bootstrap.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='administrator/assets/js/plugin/datatables/datatables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='administrator/assets/js/ready.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#add-row').DataTable({
+                pageLength: 25
+            });
+        });
+    </script>
+</body>
+
+</html>
